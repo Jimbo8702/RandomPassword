@@ -1,10 +1,6 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var uppercase = confirm("Would you like uppercase letters?");
-var lowercase = confirm("Would you like lowercase letters");
-var numbers = confirm("Would you like numbers?");
-var special = confirm("Would you like speical characters");
-var length = prompt("How long would you like your password");
+
 // Write password to the #password input
 var uppercaseletters = [
   "A",
@@ -66,7 +62,7 @@ var numbersArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var specialArray = ["!", "@", "#", "$", "%", "^", "&", "*"];
 const passwordsource = [];
 
-function generatePassword() {
+function generatePassword(uppercase, lowercase, numbers, special, length) {
   if (uppercase) {
     var group1 = passwordsource.concat(uppercaseletters);
   } else {
@@ -88,7 +84,8 @@ function generatePassword() {
   if (length < 8) {
     var incorrect = alert("Please enter a number greater then 8");
     var length = prompt("How long would you like your password");
-  }
+  } else if (length > 128)
+    var short = alert("Please enter a number less then 128");
   const pool = [];
   const mainpool = pool.concat(group1, group2, group3, group4);
   console.log(mainpool);
@@ -111,25 +108,39 @@ function generatePassword() {
 
   shuffle(mainpool);
   console.log(mainpool);
-  makePassword();
-
-  function makePassword() {
-    var random = "";
-    for (var i = 0; i < this.length; i++) {
-      random += mainpool[Math.floor(Math.random() * mainpool.length)];
-      console.log(random);
-    }
-    console.log(random);
-    return random;
-  }
-  return makePassword();
+  return makePassword(mainpool, length);
 }
-generatePassword();
+function makePassword(mainpool, length) {
+  var random = "";
+  for (var i = 0; i < length; i++) {
+    random += mainpool[Math.floor(Math.random() * mainpool.length)];
+    console.log(random);
+  }
+  console.log(random);
+  return random;
+}
+
+function runPrompts() {
+  var uppercase = confirm("Would you like uppercase letters?");
+  var lowercase = confirm("Would you like lowercase letters");
+  var numbers = confirm("Would you like numbers?");
+  var special = confirm("Would you like speical characters");
+  var length = prompt("How long would you like your password");
+  var password = generatePassword(
+    uppercase,
+    lowercase,
+    numbers,
+    special,
+    length
+  );
+  return password;
+}
 
 function writePassword() {
-  var password = generatePassword();
+  console.log(runPrompts());
+  //var password = generatePassword();
   var passwordText = document.querySelector("#password");
-  passwordText.value = password;
+  passwordText.value = runPrompts();
 }
 
 //Add event listener to generate button
